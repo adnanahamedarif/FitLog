@@ -1,6 +1,8 @@
+
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import {  createContext, useContext, useState,  useEffect,} from "react";
+
 import type { Workout, PlanWorkout } from "@/app/Types/types";
 import { toast } from "react-hot-toast";
 
@@ -16,11 +18,36 @@ type PlanContextType = {
 
 const PlanContext = createContext<PlanContextType | undefined>(undefined);
 
-export function PlanProvider({ children,}: {children: React.ReactNode;}) {
+export function PlanProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [plan, setPlan] = useState<PlanWorkout[]>([]);
     const [saved, setSaved] = useState<Workout[]>([]);
+    const [loaded, setLoaded] = useState(false);
 
+    useEffect(() => {
+        const savedPlan = localStorage.getItem("fitlog-plan");
+        const savedWorkouts = localStorage.getItem("fitlog-saved");
 
+        if (savedPlan) {
+            setPlan(JSON.parse(savedPlan));
+        }
+
+        if (savedWorkouts) {
+            setSaved(JSON.parse(savedWorkouts));
+        }
+
+        setLoaded(true);
+    }, []);
+
+    useEffect(() => {
+        if (loaded) {
+            localStorage.setItem("fitlog-plan", JSON.stringify(plan));
+            localStorage.setItem("fitlog-saved", JSON.stringify(saved));
+        }
+    }, [plan, saved, loaded]);
 
     function addToPlan(workout: Workout) {
         const alreadyAdded = plan.some(
@@ -70,10 +97,12 @@ export function PlanProvider({ children,}: {children: React.ReactNode;}) {
         toast.success("Workout removed from saved!");
     }
 
-    // Mark workout as done
     function markAsDone(id: number) {
-        setPlan(plan.map((item) =>
-                item.id === id ? { ...item, isDone: true }: item
+        setPlan(
+            plan.map((item) =>
+                item.id === id
+                    ? { ...item, isDone: true }
+                    : item
             )
         );
 
@@ -82,9 +111,8 @@ export function PlanProvider({ children,}: {children: React.ReactNode;}) {
 
     return (
         <PlanContext.Provider
-            value={{ 
-                plan, saved,addToPlan, addToSaved, removeFromPlan,  removeFromSaved, markAsDone,
-            }} > {children}
+            value={{ plan, saved, addToPlan, addToSaved,removeFromPlan,removeFromSaved,markAsDone, }} >
+            {children}
         </PlanContext.Provider>
     );
 }
