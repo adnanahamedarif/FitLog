@@ -9,8 +9,8 @@ import { getWorkoutById } from "@/app/utils/api";
 import WorkoutDetailsSkeleton from "@/app/WorkoutDetailsSkeleton"
 import NotFound from "@/app/not-found";
 import { usePlan } from "@/app/context/PlanContext";
-
-export default function WorkoutDetailsPage() {
+import { Suspense } from "react";
+function WorkoutDetailsContent() {
     const params = useParams();
     const router = useRouter();
 
@@ -165,4 +165,12 @@ export default function WorkoutDetailsPage() {
             </div>
         </div>
     );
+}
+
+export default function WorkoutDetailsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading workout...</div>}>
+      <WorkoutDetailsContent />
+    </Suspense>
+  );
 }

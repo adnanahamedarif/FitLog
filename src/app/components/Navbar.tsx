@@ -27,13 +27,7 @@ export default function Navbar() {
 
                 <div className="navbar-start">
                     <Link href="/" className="flex items-center gap-3">
-                        <Image
-                            src={logo}
-                            alt="FitLog Logo"
-                            width={32}
-                            height={32}
-                            className="object-contain"
-                        />
+                        <Image  src={logo} alt="FitLog Logo"  width={32} height={32}className="object-contain"/>
 
                         <h2 className="text-2xl font-black tracking-tight text-white">
                             FIT<span className="text-[#CCFF00]">LOG</span>
