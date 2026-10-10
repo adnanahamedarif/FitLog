@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Plus,Bookmark,} from "lucide-react";
+import { ArrowLeft, Plus, Bookmark, } from "lucide-react";
 
 import type { Workout } from "@/app/Types/types";
 import { getWorkoutById } from "@/app/utils/api";
 import WorkoutDetailsSkeleton from "@/app/WorkoutDetailsSkeleton"
-import { toast } from "react-hot-toast";
 import NotFound from "@/app/not-found";
+import { usePlan } from "@/app/context/PlanContext";
 
 export default function WorkoutDetailsPage() {
     const params = useParams();
@@ -18,6 +18,8 @@ export default function WorkoutDetailsPage() {
 
     const [workout, setWorkout] = useState<Workout | null>(null);
     const [loading, setLoading] = useState(true);
+
+    const { addToPlan, addToSaved } = usePlan();
 
     useEffect(() => {
         async function loadWorkout() {
@@ -41,7 +43,7 @@ export default function WorkoutDetailsPage() {
     // Error screen
     if (!workout) {
         return (
-            <NotFound/>
+            <NotFound />
         );
     }
 
@@ -134,22 +136,23 @@ export default function WorkoutDetailsPage() {
                             </div>
                         </div>
 
-                    
+
+
 
                         {/* Buttons */}
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
 
                             <button
-                                onClick={() => toast.success("Added to today's plan!")}
-                                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#CCFF00] px-5 py-3.5 text-sm font-black text-black transition hover:bg-[#DFFF4F]"
-                            ><Plus size={18} />
+                                onClick={() => addToPlan(workout)}
+                                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#CCFF00] px-5 py-3.5 text-sm font-black text-black transition hover:bg-[#DFFF4F]" >
+                                <Plus size={18} />
                                 Add to today's plan
                             </button>
 
                             <button
-                                onClick={() => toast.success("Saved for later!")}
-                                className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3.5 text-sm font-bold text-white transition hover:border-[#CCFF00] hover:text-[#CCFF00]"
-                            ><Bookmark size={16} />
+                                onClick={() => addToSaved(workout)}
+                                className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/15 px-5 py-3.5 text-sm font-bold text-white transition hover:border-[#CCFF00] hover:text-[#CCFF00]" >
+                                <Bookmark size={16} />
                                 Save for later
                             </button>
 
