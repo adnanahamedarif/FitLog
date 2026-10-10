@@ -7,8 +7,6 @@ export default function Home() {
     <>
       <Hero />
       <LibrarySection />
-
-      <h2>Home Page</h2>
     </>
   );
 }
