@@ -19,6 +19,10 @@ FitLog is a modern and responsive workout library application built with Next.js
 4. **Save for Later** — Save favorite workouts for quick access.
 5. **Local Storage** — Keep your workout plan and saved workouts after refreshing the page.
 
+## 📸 Screenshots
+
+![FitLog Application Overview](https://github.com/adnanahamedarif/FitLog/blob/master/fitlog-readme-overview.png?raw=true)
+
 ## 🌐 Live Link
 
 https://fit-log-adnan.vercel.app
